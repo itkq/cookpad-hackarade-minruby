@@ -187,16 +187,25 @@ def evaluate(exp, env)
 
   # You don't need advices anymore, do you?
   when "ary_new"
-    raise(NotImplementedError) # Problem 6
+    ary = []
+    exp[1..-1].each do |a|
+      ary << evaluate(a, env)
+    end
+    ary
 
   when "ary_ref"
-    raise(NotImplementedError) # Problem 6
+    evaluate(exp[1], env)[evaluate(exp[2], env)]
 
   when "ary_assign"
-    raise(NotImplementedError) # Problem 6
+    ary = evaluate(exp[1], env)
+    ary[evaluate(exp[2], env)] = evaluate(exp[3], env)
 
   when "hash_new"
-    raise(NotImplementedError) # Problem 6
+    hash = {}
+    exp[1..-1].each_cons(2) do |k,v|
+      hash[evaluate(k, env)] = evaluate(v, env)
+    end
+    hash
 
   else
     p("error")
