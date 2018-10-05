@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+if `ruby interp.rb #{ARGV[0]}` == `ruby #{ARGV[0]}`
+  puts 'pass'
+else
+  puts 'failed'
+end
