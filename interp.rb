@@ -156,7 +156,10 @@ def evaluate(exp, env)
       # (*1) formal parameter: a variable as found in the function definition.
       # For example, `a`, `b`, and `c` are the formal parameters of
       # `def foo(a, b, c)`.
-      raise(NotImplementedError) # Problem 5
+      if $function_definitions[exp[1]]
+        # binding.pry
+        send($function_definitions[exp[1]], evaluate(exp[2], env))
+      end
     end
 
   when "func_def"
@@ -168,8 +171,15 @@ def evaluate(exp, env)
     # All you need is store them into $function_definitions.
     #
     # Advice: $function_definitions[???] = ???
-    raise(NotImplementedError) # Problem 5
-
+    # binding.pry
+    $function_definitions[exp[1]] = define_method(exp[1]) do |*arg|
+      local_env = {}.merge(env)
+      arg.each_with_index do |a,i|
+        local_env[exp[2][i]] = a
+      end
+      # binding.pry
+      evaluate(exp[3], local_env)
+    end
 
 #
 ## Problem 6: Arrays and Hashes
